@@ -29,6 +29,8 @@
 		<section class="w-1/2">
 			{#if !todos}
 				<p class="text-neutral font-bold">loading...</p>
+			{:else if todos.length === 0}
+				<p class="text-neutral font-bold">No Todos Found...</p>
 			{:else}
 				<ul class="flex gap-2 flex-col h-96">
 					{#each todos as todo}
