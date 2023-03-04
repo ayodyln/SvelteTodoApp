@@ -26,11 +26,11 @@
 
 		<div class="divider divider-horizontal m-0 h-50" />
 
-		<section class="w-1/2 ">
+		<section class="w-1/2">
 			{#if !todos}
 				<p>loading...</p>
 			{:else}
-				<ul class="flex gap-2 flex-col">
+				<ul class="flex gap-2 flex-col h-96">
 					{#each todos as todo}
 						<Todos {todo} {updateListHandler} />
 					{/each}
