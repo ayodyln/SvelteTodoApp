@@ -32,7 +32,7 @@
 			{:else}
 				<ul class="flex gap-2 flex-col">
 					{#each todos as todo}
-						<Todos {todo} />
+						<Todos {todo} {updateListHandler} />
 					{/each}
 				</ul>
 			{/if}

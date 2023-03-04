@@ -2,7 +2,7 @@
 	import Completed from './Completed.svelte'
 	import NotComplete from './NotComplete.svelte'
 
-	export let todo
+	export let todo, updateListHandler
 
 	let editState = false,
 		newTask,
@@ -10,6 +10,7 @@
 
 	const dueDate = (ts) => {
 		const date = new Date(ts)
+
 		return `${date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()}-${
 			date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()
 		}-${date.getFullYear()}`
@@ -32,11 +33,19 @@
 				},
 				body: JSON.stringify({
 					id,
-					task,
-					ts: new Date(date).getTime()
+					task: newTask,
+					ts: new Date(newDate).getTime()
 				})
 			})
-		} catch (error) {}
+
+			const todos = await UpdateTodo.json()
+
+			updateListHandler(todos.Todos)
+		} catch (error) {
+			console.log(error)
+		}
+
+		editState = !editState
 	}
 </script>
 
@@ -44,20 +53,20 @@
 	<div class="w-2/3">
 		{#if !editState}
 			<h3 class="text-xl font-bold">{todo.task}</h3>
-			<p>{dueDate(todo.ts)}</p>
+			<p>Due: {dueDate(todo.ts)}</p>
 		{:else}
 			<div class="form-control mb-1">
 				<input
 					type="text"
 					placeholder="Name of Task..."
-					class="input input-sm input-bordered w-full"
+					class="input input-sm input-bordered w-full text-neutral"
 					bind:value={newTask} />
 			</div>
 
 			<div class="form-control">
 				<input
 					type="date"
-					class="input text-primary-content input-sm input-bordered w-full"
+					class="input text-primary-content input-sm input-bordered w-full text-neutral"
 					bind:value={newDate} />
 			</div>
 		{/if}

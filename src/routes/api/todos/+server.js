@@ -36,3 +36,17 @@ export const POST = async ({ request }) => {
 		}
 	})
 }
+
+export const PUT = async ({ request }) => {
+	const data = await request.json()
+
+	const todo = Todos.find((todo) => todo.id === data.id)
+	todo.task = data.task
+	todo.ts = data.ts
+
+	return new Response(JSON.stringify({ Todos }), {
+		headers: {
+			'content-type': 'application/json'
+		}
+	})
+}
