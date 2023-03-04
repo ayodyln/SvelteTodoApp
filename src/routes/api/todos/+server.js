@@ -40,9 +40,16 @@ export const POST = async ({ request }) => {
 export const PUT = async ({ request }) => {
 	const data = await request.json()
 
-	const todo = Todos.find((todo) => todo.id === data.id)
-	todo.task = data.task
-	todo.ts = data.ts
+	if (data.task && data.ts && data.id) {
+		const todo = Todos.find((todo) => todo.id === data.id)
+		todo.task = data.task
+		todo.ts = data.ts
+	}
+
+	if (data.id) {
+		const todo = Todos.find((todo) => todo.id === data.id)
+		todo.completed = !todo.completed
+	}
 
 	return new Response(JSON.stringify({ Todos }), {
 		headers: {
