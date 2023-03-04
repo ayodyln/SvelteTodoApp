@@ -5,7 +5,7 @@
 
 	import Form from '../lib/components/Form.svelte'
 
-	let todos = []
+	let todos
 
 	const updateListHandler = (Todos) => (todos = [...Todos])
 
@@ -28,7 +28,7 @@
 
 		<section class="w-1/2">
 			{#if !todos}
-				<p>loading...</p>
+				<p class="text-neutral font-bold">loading...</p>
 			{:else}
 				<ul class="flex gap-2 flex-col h-96">
 					{#each todos as todo}
