@@ -1,4 +1,4 @@
-const Todos = [
+let Todos = [
 	{
 		id: 1,
 		task: 'Homework',
@@ -40,7 +40,7 @@ export const POST = async ({ request }) => {
 export const PUT = async ({ request }) => {
 	const data = await request.json()
 
-	if (data.task && data.ts && data.id) {
+	if (data.task) {
 		const todo = Todos.find((todo) => todo.id === data.id)
 		todo.task = data.task
 		todo.ts = data.ts
@@ -50,6 +50,18 @@ export const PUT = async ({ request }) => {
 		const todo = Todos.find((todo) => todo.id === data.id)
 		todo.completed = !todo.completed
 	}
+
+	return new Response(JSON.stringify({ Todos }), {
+		headers: {
+			'content-type': 'application/json'
+		}
+	})
+}
+
+export const DELETE = async ({ request }) => {
+	const data = await request.json()
+
+	Todos = Todos.filter((todo) => todo.id !== data.id)
 
 	return new Response(JSON.stringify({ Todos }), {
 		headers: {

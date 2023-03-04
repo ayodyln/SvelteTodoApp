@@ -19,10 +19,11 @@
 	const editTodo = () => (editState = !editState)
 
 	const updateTodoHandler = async (event) => {
-		if (!newTask || !newDate) {
+		if (!newTask && !newDate) {
 			editState = !editState
 			return
 		}
+
 		const id = event.target.dataset.id * 1
 
 		try {
@@ -37,10 +38,12 @@
 					ts: new Date(newDate).getTime()
 				})
 			})
-
 			const todos = await UpdateTodo.json()
 
 			updateListHandler(todos.Todos)
+
+			newTask = undefined
+			newDate = undefined
 		} catch (error) {
 			console.log(error)
 		}
@@ -65,6 +68,28 @@
 			const todos = await UpdateTodo.json()
 
 			updateListHandler(todos.Todos)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const deleteTodo = async (event) => {
+		const id = event.target.dataset.id * 1
+
+		try {
+			const UpdateTodo = await fetch('/api/todos', {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					id
+				})
+			})
+
+			const t = await UpdateTodo.json()
+
+			updateListHandler(t.Todos)
 		} catch (error) {
 			console.log(error)
 		}
@@ -125,8 +150,21 @@
 		</button>
 
 		{#if editState}
-			<button data-id={todo.id} on:click={updateTodoHandler} class="btn w-full btn-sm mt-1"
-				>Save</button>
+			<button
+				data-id={todo.id}
+				data-tip="Save Todo"
+				on:click={updateTodoHandler}
+				class="btn w-full btn-sm mt-1 tooltip">Save</button>
+		{:else}
+			<button
+				class="btn w-full btn-sm mt-1 fill-neutral-content flex justify-center tooltip"
+				data-tip="Delete Todo"
+				data-id={todo.id}
+				on:click={deleteTodo}
+				><svg xmlns="http://www.w3.org/2000/svg" class="w-3" viewBox="0 0 448 512"
+					><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path
+						d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
+			</button>
 		{/if}
 	</div>
 </li>

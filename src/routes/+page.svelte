@@ -41,7 +41,5 @@
 </main>
 
 <!--
-User can edit todos
-User can complete todos
 User can delete todos 
 -->
